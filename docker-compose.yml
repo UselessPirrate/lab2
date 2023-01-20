@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+mysql-service:
+container_name: mysql-service
+image: mysql
+volumes:
+- ./init.sql:/home/init.sql
+command: --init-file /home/init.sql
+ports:
+- 3306:3306
+environment:
+- MYSQL_ROOT_PASSWORD=root
+restart: unless-stopped
+healthcheck:
+test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+client:
+build: .
+depends_on:
+mysql-service:
+condition: service_healthy
+links:
+- mysql-service
+volumes:
+- ./output:/output
