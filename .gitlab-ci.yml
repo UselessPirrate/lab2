@@ -1,0 +1,14 @@
+image: node:latest
+
+stages:
+- start
+start:
+stage: start
+interruptible: true
+script:
+- mkdir output
+- docker-compose up -d
+
+  artifacts:
+    paths:
+      - ./output.json
